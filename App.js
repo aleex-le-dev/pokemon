@@ -1,10 +1,10 @@
 import { StyleSheet, View } from 'react-native';
-import StartBtn from './components/StartBtn';
+import Card from './components/Card';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <StartBtn />
+    <Card />
     </View>
   );
 }

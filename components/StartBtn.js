@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Animated,
   Dimensions,
@@ -16,27 +16,74 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 export default function StartBtn() {
   const animatedScale = useRef(new Animated.Value(1)).current;
   const animatedOpacity = useRef(new Animated.Value(1)).current;
+  const animatedColor = useRef(new Animated.Value(0)).current;
+  const animatedTranslate = useRef(new Animated.Value(0)).current;
 
   const onPress = () => {
-    Animated.parallel([
-      Animated.timing(animatedScale, {
-        toValue: 5,
-        duration: 3000,
-        delay: 500,
-        useNativeDriver: true,
-      }),
-      Animated.timing(animatedOpacity, {
-        toValue: 0,
-        duration: 3000,
-        delay: 500,
-        useNativeDriver: true,
-      }),
-    ]).start();
+    animatedOpacity.resetAnimation();
+    animatedScale.resetAnimation();
+    animatedColor.resetAnimation();
+    Animated.timing(animatedTranslate, {
+      toValue: Dimensions.get("screen").width,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
   };
 
+  useEffect(() => {
+    Animated.loop(
+      Animated.parallel([
+        Animated.timing(animatedScale, {
+          toValue: 5,
+          duration: 3000,
+          delay: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animatedOpacity, {
+          toValue: 0,
+          duration: 3000,
+          delay: 500,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    Animated.loop(
+      Animated.timing(animatedColor, {
+        toValue: 7,
+        duration: 14000,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, []);
+
+  const interpolatedColor = animatedColor.interpolate({
+    inputRange: [0, 1, 2, 3, 4, 5, 6, 7],
+    outputRange: [
+      "#f54242",
+      "#f59842",
+      "#f2f542",
+      "#42f545",
+      "#42f5cb",
+      "#427bf5",
+      "#bf42f5",
+      "#f54242",
+    ],
+  });
+
   return (
-    <View style={styles.container}>
-      <AnimatedPressable style={styles.btn} onPress={onPress}>
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          transform: [{ translateX: animatedTranslate }],
+        },
+      ]}
+    >
+      <AnimatedPressable
+        style={[styles.btn, { backgroundColor: interpolatedColor }]}
+        onPress={onPress}
+      >
         <Text style={styles.text}>Jouer</Text>
       </AnimatedPressable>
       <Animated.View
@@ -52,7 +99,7 @@ export default function StartBtn() {
           },
         ]}
       />
-    </View>
+    </Animated.View>
   );
 }
 

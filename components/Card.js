@@ -18,7 +18,7 @@ const CARD_WIDTH =
 const CARD_HEIGHT =
   (SCREEN_HEIGHT - MARGIN_VERTICAL * 2 - SPACE_BETWEEN_CARDS * 3) / 4;
 
-export default function Card({ index, shouldDistribute }) {
+export default function Card({ index, shouldDistribute, card }) {
   const animatedLeft = useRef(
     new Animated.Value(SCREEN_WIDTH / 2 - CARD_WIDTH / 2)
   ).current;
@@ -80,10 +80,16 @@ export default function Card({ index, shouldDistribute }) {
       ]}
     >
       <Pressable style={styles.cardContainer}>
-        <Image
+      <Image
           resizeMode="contain"
           source={require("../assets/pokeball.png")}
-          style={styles.card}
+          style={[styles.card, styles.frontCard]}
+        />
+
+<Image
+          resizeMode="contain"
+          source={card.source}
+          style={[styles.card, styles.backCard]}
         />
       </Pressable>
     </Animated.View>
@@ -104,6 +110,13 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     borderRadius: 8,
+  
+    position: "absolute",
+  },
+  frontCard: {
+    backgroundColor: "yellow",
+  },
+  backCard: {
     backgroundColor: "powderblue",
   },
 });

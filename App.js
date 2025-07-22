@@ -13,7 +13,13 @@ export default function App() {
   return (
     <View style={styles.container}>
       {pokemonsArr.map((card, index) => (
-        <Card key={card.id} index={index} shouldDistribute={shouldDistribute} />
+        <Card 
+        key={card.id} 
+        index={index} 
+        shouldDistribute={shouldDistribute} 
+        card={card}
+     
+        />
       ))}
       <StartBtn startGame={startGame} />
     </View>

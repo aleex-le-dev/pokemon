@@ -27,11 +27,8 @@ export default function Card({ index, shouldDistribute }) {
   ).current;
 
   const distribute = () => {
-
     Animated.parallel([
-
-      Animated.timing(
-        animatedLeft, {
+      Animated.timing(        animatedLeft, {
         toValue: 
         (index+1) % 3 === 0 
         ? MARGIN_HORIZONTAL+CARD_WIDTH*2+SPACE_BETWEEN_CARDS *2 
@@ -40,7 +37,7 @@ export default function Card({ index, shouldDistribute }) {
         : MARGIN_HORIZONTAL,
 
         duration: 1000,
-        delay :100 + index,
+        delay :100 * index,
         useNativeDriver: true,
       }),
      
@@ -55,7 +52,7 @@ export default function Card({ index, shouldDistribute }) {
         : MARGIN_VERTICAL+CARD_HEIGHT*3+SPACE_BETWEEN_CARDS*3,
 
         duration: 1000,
-        delay :100 + index,
+        delay :100 * index,
         useNativeDriver: true,
       }),
 

@@ -9,16 +9,21 @@ const card_width = (screen_Width - margin_horizontal * 2 - space_between_cards *
 const card_height = (screen_Height - margin_vertical * 2 - space_between_cards * 3) / 4;
 
 
-export default function Card() {
+export default function Card({pokemon}) {
+
+    const AnimatedLeft = useRef(
+        new Animated.Value(screen_Width /2 - card_width / 2));
+    const AnimatedTop = useRef(
+        new Animated.Value(screen_Height /2 - card_height / 2));
 
  return (
-   <View style={styles.container}>
+   <Animated.view style={[styles.container, { transform: [{ translateX: AnimatedLeft }, { translateY: AnimatedTop }] }]}>
 <Pressable style={styles.cardContainer}>
 <Image resizeMode="contain" source={require("../assets/pokemon_img/pokeball.png")} style={styles.card} />
 
 
 </Pressable>
-   </View>
+   </Animated.view>
  )
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
   Animated,
   Dimensions,
@@ -11,39 +11,34 @@ import {
 const BTN_SIZE = Dimensions.get("screen").width / 2;
 const CIRCLE_SIZE = BTN_SIZE + 8;
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 export default function StartBtn() {
   const animatedScale = useRef(new Animated.Value(1)).current;
   const animatedOpacity = useRef(new Animated.Value(1)).current;
 
   const onPress = () => {
-    animatedOpacity.resetAnimation();
-    animatedScale.resetAnimation();
+    Animated.parallel([
+      Animated.timing(animatedScale, {
+        toValue: 5,
+        duration: 3000,
+        delay: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animatedOpacity, {
+        toValue: 0,
+        duration: 3000,
+        delay: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.parallel([
-        Animated.timing(animatedScale, {
-          toValue: 5,
-          duration: 3000,
-          delay: 500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(animatedOpacity, {
-          toValue: 0,
-          duration: 3000,
-          delay: 500,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start(); 
-  }, []);
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.btn} onPress={onPress}>
+      <AnimatedPressable style={styles.btn} onPress={onPress}>
         <Text style={styles.text}>Jouer</Text>
-      </Pressable>
+      </AnimatedPressable>
       <Animated.View
         style={[
           styles.circle,

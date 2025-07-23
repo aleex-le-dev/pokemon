@@ -18,7 +18,7 @@ const CARD_WIDTH =
 const CARD_HEIGHT =
   (SCREEN_HEIGHT - MARGIN_VERTICAL * 2 - SPACE_BETWEEN_CARDS * 3) / 4;
 
-export default function Card({ index, shouldDistribute, card, onPressCard, isCleared, isFlipped }) {
+export default function Card({ index, shouldDistribute, card, onPressCard, isCleared, isFlipped, restart, setRestart }) {
   const animatedLeft = useRef(
     new Animated.Value(SCREEN_WIDTH / 2 - CARD_WIDTH / 2)
   ).current;
@@ -27,6 +27,20 @@ export default function Card({ index, shouldDistribute, card, onPressCard, isCle
   ).current;
   const animatedRotation = useRef(new Animated.Value(0)).current;
   const animatedOpacity = useRef(new Animated.Value(1)).current;
+
+  const initPosition =() => {
+    animatedLeft.setValue(-SCREEN_WIDTH / 2 );
+    animatedTop.setValue(-SCREEN_HEIGHT / 2);
+    animatedOpacity.setValue(1);
+    animatedRotation.setValue(1);
+    distribute();
+  }
+
+  useEffect(() => {
+    if (restart) {
+      initPosition();
+    }
+  }, [restart]);
 
   useEffect(() => {
     if (isCleared) {
@@ -53,6 +67,10 @@ export default function Card({ index, shouldDistribute, card, onPressCard, isCle
   const flipCard = () => {
     if (!isFlipped && !isCleared) {
       onPressCard(card);
+      if (restart) {
+        setRestart(false);
+        distribute();
+      }
     }
   };
 
@@ -92,7 +110,9 @@ export default function Card({ index, shouldDistribute, card, onPressCard, isCle
         delay: 100 * index,
         useNativeDriver: true,
       }),
-    ]).start();
+    ]).start(() => {
+      setRestart(false);
+    });
   };
 
   useEffect(() => {

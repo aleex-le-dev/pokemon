@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Animated, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Animated, Image, Pressable, Easing } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -15,11 +15,13 @@ export default function Completed({isCompleted, handleRestart}) {
                 toValue: 1,
                 duration: 500,
                 useNativeDriver: true,
+                easing: Easing.elastic(5),
             }),
             Animated.timing(animatedBtnScale, {
                 toValue: 1,
                 duration: 500,
                 useNativeDriver: true,
+                easing: Easing.bounce,
             }),
         ]).start();
     }
@@ -31,11 +33,13 @@ export default function Completed({isCompleted, handleRestart}) {
                 toValue: 0,
                 duration: 500,
                 useNativeDriver: true,
+                easing: Easing.back(),
             }),
             Animated.timing(animatedBtnScale, {
                 toValue: 0,
                 duration: 500,
                 useNativeDriver: true,
+
             }),
         ]).start(() => {
             handleRestart();

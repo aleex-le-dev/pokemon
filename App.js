@@ -67,6 +67,8 @@ export default function App() {
           onPressCard={handleCardPress}
           isFlipped={!!openedCards.find(el => el.id === card.id)}
           isCleared={!!clearedCards.includes(card.type)}
+          restart={restart}
+          setRestart={setRestart}
         />
       ))}
       {!shouldDistribute && <StartBtn startGame={startGame} />}

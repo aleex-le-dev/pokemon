@@ -40,6 +40,11 @@ export default function Card({ index, shouldDistribute, card }) {
     outputRange: ["0deg", "180deg"],
   });
 
+  const reverseSpin = animatedRotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["180deg", "0deg"],
+  });
+
   const distribute = () => {
     Animated.parallel([
       Animated.timing(animatedLeft, {
@@ -92,7 +97,7 @@ export default function Card({ index, shouldDistribute, card }) {
             styles.card,
             styles.frontCard,
             {
-              transform: [{ rotateY: spin }, { perspective: 1000 }],
+              transform: [{ rotateY: reverseSpin }, { perspective: 1000 }],
             },
           ]}
         >

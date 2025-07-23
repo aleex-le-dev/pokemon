@@ -12,7 +12,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {shouldDistribute && pokemonsArr.map((card, index) => (
+      {shouldDistribute && pokemonsArr.sort(() => Math.random() - 0.5).map((card, index) => (
         <Card 
           key={card.id} 
           index={index} 

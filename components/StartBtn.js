@@ -107,7 +107,21 @@ export default function StartBtn({startGame}) {
         />
       </AnimatedPressable>
       <Text style={styles.textBelow}>Jouer</Text>
-      {/* Animation du cercle retirée ici. Pour la réintégrer, placer le code d'animation à cet endroit. */}
+      {/*
+      <Animated.View
+        style={[
+          styles.circle,
+          {
+            transform: [
+              { translateX: -CIRCLE_SIZE / 2 },
+              { translateY: -CIRCLE_SIZE / 2 },
+              { scale: animatedScale },
+            ],
+            opacity: animatedOpacity,
+          },
+        ]}
+      />
+      */}
     </Animated.View>
   );
 }

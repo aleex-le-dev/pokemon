@@ -113,7 +113,7 @@ export default function Card({ index, shouldDistribute, card, onPressCard, isCle
         },
       ]}
     >
-        <Pressable style={styles.cardContainer} onPress={() => onPressCard(card)} >
+        <Pressable style={styles.cardContainer} onPress={flipCard}>
 
         <Animated.View
           style={[

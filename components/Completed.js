@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View, Animated, Image, Pressable } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 
-const animatedPressable = Animated.createAnimatedComponent(Pressable);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 
-export default function Completed({isCompleted}) {
+export default function Completed({isCompleted, handleRestart}) {
     const animatedScale = useRef(new Animated.Value(0)).current;
     const animatedBtnScale = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
       if (isCompleted) {
-        animatedBtnScale.sequence([
+        Animated.sequence([
             Animated.timing(animatedScale, {
                 toValue: 1,
                 duration: 500,
@@ -26,7 +26,7 @@ export default function Completed({isCompleted}) {
     }, [isCompleted]);
 
     const onPress = () => {
-        animatedBtnScale.sequence([
+        Animated.sequence([
             Animated.timing(animatedScale, {
                 toValue: 0,
                 duration: 500,
@@ -37,16 +37,18 @@ export default function Completed({isCompleted}) {
                 duration: 500,
                 useNativeDriver: true,
             }),
-        ]).start();
+        ]).start(() => {
+            handleRestart();
+        });
     }
 
   return (
     isCompleted ? (
     <Animated.View style={[styles.container, {transform: [{scale: animatedScale}]}]}>
     <Image source={require("../assets/trophy.png")} style={styles.image} />
-    <animatedPressable style={[styles.restartBtn, {transform: [{scale: animatedBtnScale}]}]} onPress={onPress}>
+    <AnimatedPressable style={[styles.restartBtn, {transform: [{scale: animatedBtnScale}]}]} onPress={onPress}>
         <Text style={styles.Text}>Restart</Text>
-    </animatedPressable>
+    </AnimatedPressable>
     </Animated.View>
     ) : null
   );

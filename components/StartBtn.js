@@ -5,8 +5,6 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View,
-  Image,
 } from "react-native";
 
 const BTN_SIZE = Dimensions.get("screen").width / 2;
@@ -75,19 +73,19 @@ export default function StartBtn({startGame}) {
     ).start();
   }, []);
 
-  const interpolatedColor = animatedColor.interpolate({
-    inputRange: [0, 1, 2, 3, 4, 5, 6, 7],
-    outputRange: [
-      "#f54242",
-      "#f59842",
-      "#f2f542",
-      "#42f545",
-      "#42f5cb",
-      "#427bf5",
-      "#bf42f5",
-      "#f54242",
-    ],
-  });
+  // const interpolatedColor = animatedColor.interpolate({
+  //   inputRange: [0, 1, 2, 3, 4, 5, 6, 7],
+  //   outputRange: [
+  //     "#f54242",
+  //     "#f59842",
+  //     "#f2f542",
+  //     "#42f545",
+  //     "#42f5cb",
+  //     "#427bf5",
+  //     "#bf42f5",
+  //     "#f54242",
+  //   ],
+  // });
 
   return (
     <Animated.View

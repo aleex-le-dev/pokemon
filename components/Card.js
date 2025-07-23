@@ -25,40 +25,48 @@ export default function Card({ index, shouldDistribute, card }) {
   const animatedTop = useRef(
     new Animated.Value(SCREEN_HEIGHT / 2 - CARD_HEIGHT / 2)
   ).current;
+  const animatedRotation = useRef(new Animated.Value(0)).current;
+
+  const flipCard = () => {
+    Animated.timing(animatedRotation, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const spin = animatedRotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "180deg"],
+  });
 
   const distribute = () => {
     Animated.parallel([
-      Animated.timing(        animatedLeft, {
-        toValue: 
-        (index+1) % 3 === 0 
-        ? MARGIN_HORIZONTAL+CARD_WIDTH*2+SPACE_BETWEEN_CARDS *2 
-        : (index+1) % 2 === 0 
-        ? MARGIN_HORIZONTAL+CARD_WIDTH+SPACE_BETWEEN_CARDS
-        : MARGIN_HORIZONTAL,
-
+      Animated.timing(animatedLeft, {
+        toValue:
+          (index + 1) % 3 === 0
+            ? MARGIN_HORIZONTAL + CARD_WIDTH * 2 + SPACE_BETWEEN_CARDS * 2
+            : (index + 1) % 2 === 0
+            ? MARGIN_HORIZONTAL + CARD_WIDTH + SPACE_BETWEEN_CARDS
+            : MARGIN_HORIZONTAL,
         duration: 1000,
-        delay :100 * index,
+        delay: 100 * index,
         useNativeDriver: true,
       }),
-     
-      Animated.timing(
-        animatedTop, {
-        toValue:  index < 3 
-        ? MARGIN_VERTICAL
-        : index < 6 
-        ? MARGIN_VERTICAL+CARD_HEIGHT+SPACE_BETWEEN_CARDS
-        : index < 9 
-        ? MARGIN_VERTICAL+CARD_HEIGHT*2+SPACE_BETWEEN_CARDS*2
-        : MARGIN_VERTICAL+CARD_HEIGHT*3+SPACE_BETWEEN_CARDS*3,
-
+      Animated.timing(animatedTop, {
+        toValue:
+          index < 3
+            ? MARGIN_VERTICAL
+            : index < 6
+            ? MARGIN_VERTICAL + CARD_HEIGHT + SPACE_BETWEEN_CARDS
+            : index < 9
+            ? MARGIN_VERTICAL + CARD_HEIGHT * 2 + SPACE_BETWEEN_CARDS * 2
+            : MARGIN_VERTICAL + CARD_HEIGHT * 3 + SPACE_BETWEEN_CARDS * 3,
         duration: 1000,
-        delay :100 * index,
+        delay: 100 * index,
         useNativeDriver: true,
       }),
-
     ]).start();
-
-
   };
 
   useEffect(() => {
@@ -66,7 +74,6 @@ export default function Card({ index, shouldDistribute, card }) {
       distribute();
     }
   }, [shouldDistribute]);
-
   return (
     <Animated.View
       style={[
@@ -79,18 +86,37 @@ export default function Card({ index, shouldDistribute, card }) {
         },
       ]}
     >
-      <Pressable style={styles.cardContainer}>
-      <Image
-          resizeMode="contain"
-          source={require("../assets/pokeball.png")}
-          style={[styles.card, styles.frontCard]}
-        />
-
-<Image
-          resizeMode="contain"
-          source={card.source}
-          style={[styles.card, styles.backCard]}
-        />
+      <Pressable style={styles.cardContainer} onPress={flipCard}>
+        <Animated.View
+          style={[
+            styles.card,
+            styles.frontCard,
+            {
+              transform: [{ rotateY: spin }, { perspective: 1000 }],
+            },
+          ]}
+        >
+          <Image
+            resizeMode="contain"
+            source={require("../assets/pokeball.png")}
+            style={styles.image}
+          />
+        </Animated.View>
+        <Animated.View
+          style={[
+            styles.card,
+            styles.backCard,
+            {
+              transform: [{ rotateY: spin }, { perspective: 1000 }],
+            },
+          ]}
+        >
+          <Image
+            resizeMode="contain"
+            source={card.source}
+            style={styles.image}
+          />
+        </Animated.View>
       </Pressable>
     </Animated.View>
   );
@@ -110,13 +136,19 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     borderRadius: 8,
-  
     position: "absolute",
+    backgroundColor: "powderblue",
+    backfaceVisibility: "hidden",
   },
   frontCard: {
-    backgroundColor: "yellow",
+    backgroundColor: "coral",
   },
   backCard: {
     backgroundColor: "powderblue",
+  },
+  image: {
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    resizeMode: "contain",
   },
 });

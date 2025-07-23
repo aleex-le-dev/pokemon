@@ -7,3 +7,7 @@ Ce projet est une application mobile réalisée avec React Native permettant d'a
 - Interface responsive
 - Utilisation d'assets personnalisés
 
+# Capture d'écran du jeu
+
+![Aperçu du jeu](./assets/Capture d'écran 2025-07-23 132559.png)
+

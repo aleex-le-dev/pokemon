@@ -9,6 +9,8 @@ export default function App() {
   const [openedCards, setOpenedCards] = useState([]); // pour stocker les cartes ouvertes
   const [clearedCards, setClearedCards] = useState([]); // pour stocker les cartes effacées
 
+  const [isComplete, setIsComplete] = useState(false);
+
   const handleCardPress = (card) => { // pour ouvrir une carte
       setOpenedCards((prev) => [...prev, card]); 
     }
@@ -21,6 +23,15 @@ export default function App() {
         setOpenedCards([]);
       }
     }
+
+
+    useEffect(() => {
+     if (clearedCards.length === 6) {
+      setTimeout(() => {
+        setIsComplete(true);
+      }, 5000);
+    }
+    }, [clearedCards]);
 
     useEffect(() => {
       if (openedCards.length === 2) {

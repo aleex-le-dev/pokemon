@@ -18,7 +18,7 @@ const CARD_WIDTH =
 const CARD_HEIGHT =
   (SCREEN_HEIGHT - MARGIN_VERTICAL * 2 - SPACE_BETWEEN_CARDS * 3) / 4;
 
-export default function Card({ index, shouldDistribute, card }) {
+export default function Card({ index, shouldDistribute, card, onPressCard, isCleared, isFlipped }) {
   const animatedLeft = useRef(
     new Animated.Value(SCREEN_WIDTH / 2 - CARD_WIDTH / 2)
   ).current;
@@ -26,6 +26,29 @@ export default function Card({ index, shouldDistribute, card }) {
     new Animated.Value(SCREEN_HEIGHT / 2 - CARD_HEIGHT / 2)
   ).current;
   const animatedRotation = useRef(new Animated.Value(0)).current;
+  const animatedOpacity = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (isCleared) {
+      Animated.timing(animatedOpacity, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }else if (isFlipped) {
+      Animated.timing(animatedRotation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(animatedRotation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isCleared, isFlipped]);
 
   const flipCard = () => {
     Animated.timing(animatedRotation, {
@@ -91,28 +114,14 @@ export default function Card({ index, shouldDistribute, card }) {
         },
       ]}
     >
-      <Pressable style={styles.cardContainer} onPress={flipCard}>
-        <Animated.View
-          style={[
-            styles.card,
-            styles.frontCard,
-            {
-              transform: [{ rotateY: reverseSpin }, { perspective: 1000 }],
-            },
-          ]}
-        >
-          <Image
-            resizeMode="contain"
-            source={require("../assets/pokeball.png")}
-            style={styles.image}
-          />
-        </Animated.View>
+        <Pressable style={styles.cardContainer} onPress={() => onPressCard(card)} >
+
         <Animated.View
           style={[
             styles.card,
             styles.backCard,
             {
-              transform: [{ rotateY: spin }, { perspective: 1000 }],
+              transform: [{ rotateY: reverseSpin }, { perspective: 1000 }],
             },
           ]}
         >
@@ -122,6 +131,22 @@ export default function Card({ index, shouldDistribute, card }) {
             style={styles.image}
           />
         </Animated.View>
+        <Animated.View
+          style={[
+            styles.card,
+            styles.frontCard,
+            {
+              transform: [{ rotateY: spin }, { perspective: 1000 }],
+            },
+          ]}
+        >
+          <Image
+            resizeMode="contain"
+            source={require("../assets/pokeball.png")}
+            style={styles.image}
+          />
+        </Animated.View>
+     
       </Pressable>
     </Animated.View>
   );

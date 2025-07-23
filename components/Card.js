@@ -51,11 +51,9 @@ export default function Card({ index, shouldDistribute, card, onPressCard, isCle
   }, [isCleared, isFlipped]);
 
   const flipCard = () => {
-    Animated.timing(animatedRotation, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
+    if (!isFlipped && !isCleared) {
+      onPressCard(card);
+    }
   };
 
   const spin = animatedRotation.interpolate({
@@ -111,6 +109,7 @@ export default function Card({ index, shouldDistribute, card, onPressCard, isCle
             { translateX: animatedLeft },
             { translateY: animatedTop },
           ],
+          opacity: animatedOpacity,
         },
       ]}
     >

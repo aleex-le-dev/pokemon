@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from "react-native";
 
 const BTN_SIZE = Dimensions.get("screen").width / 2;
@@ -18,6 +19,8 @@ export default function StartBtn({startGame}) {
   const animatedOpacity = useRef(new Animated.Value(1)).current;
   const animatedColor = useRef(new Animated.Value(0)).current;
   const animatedTranslate = useRef(new Animated.Value(0)).current;
+  // Animation de vibration pokeball
+  const pokeballShake = useRef(new Animated.Value(0)).current;
 
   const onPress = () => {
     animatedOpacity.resetAnimation();
@@ -56,6 +59,20 @@ export default function StartBtn({startGame}) {
         useNativeDriver: true,
       })
     ).start();
+
+    // Animation vibration pokeball
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pokeballShake, { toValue: -8, duration: 40, useNativeDriver: true }),
+        Animated.timing(pokeballShake, { toValue: 8, duration: 40, useNativeDriver: true }),
+        Animated.timing(pokeballShake, { toValue: -6, duration: 35, useNativeDriver: true }),
+        Animated.timing(pokeballShake, { toValue: 6, duration: 35, useNativeDriver: true }),
+        Animated.timing(pokeballShake, { toValue: -4, duration: 30, useNativeDriver: true }),
+        Animated.timing(pokeballShake, { toValue: 4, duration: 30, useNativeDriver: true }),
+        Animated.timing(pokeballShake, { toValue: 0, duration: 30, useNativeDriver: true }),
+        Animated.delay(600),
+      ])
+    ).start();
   }, []);
 
   const interpolatedColor = animatedColor.interpolate({
@@ -82,11 +99,16 @@ export default function StartBtn({startGame}) {
       ]}
     >
       <AnimatedPressable
-        style={[styles.btn, { backgroundColor: interpolatedColor }]}
+        style={styles.btn}
         onPress={onPress}
       >
-        <Text style={styles.text}>Jouer</Text>
+        {/* Image pokeball en fond avec vibration */}
+        <Animated.Image
+          source={require("../assets/pokeball.png")}
+          style={[styles.pokeballBg, { transform: [{ translateX: pokeballShake }] }]}
+        />
       </AnimatedPressable>
+      <Text style={styles.textBelow}>Jouer</Text>
       <Animated.View
         style={[
           styles.circle,
@@ -115,15 +137,31 @@ const styles = StyleSheet.create({
     width: BTN_SIZE,
     height: BTN_SIZE,
     borderRadius: 99,
-    backgroundColor: "#5D3FD3",
+    backgroundColor: "transparent",
     alignItems: "center",
     justifyContent: "center",
     zIndex: 20,
+    overflow: "hidden",
+  },
+  pokeballBg: {
+    position: "absolute",
+    width: BTN_SIZE,
+    height: BTN_SIZE,
+    borderRadius: 99,
+    zIndex: 1,
   },
   text: {
     color: "white",
     fontSize: 24,
     fontWeight: "700",
+    zIndex: 2,
+  },
+  textBelow: {
+    color: "black",
+    fontSize: 24,
+    fontWeight: "700",
+    marginTop: 16,
+    textAlign: "center",
   },
   circle: {
     width: CIRCLE_SIZE,

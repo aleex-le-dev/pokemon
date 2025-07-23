@@ -65,15 +65,16 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         position: "absolute",
+        resizeMode: "contain",
       
     },
     restartBtn: {
         justifyContent: "center",
         alignItems: "center",
-        width: "100%",
-        height: "100%",
+        width: 260,
+        height: 160,
         padding: 16,
-        backgroundColor: "grey",
+        backgroundColor: "violet",
         borderRadius: 24,
     },
     Text: {

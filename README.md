@@ -9,5 +9,5 @@ Ce projet est une application mobile réalisée avec React Native permettant d'a
 
 # Capture d'écran du jeu
 
-![Aperçu du jeu](./assets/Capture d'écran 2025-07-23 132559.png)
+![Aperçu du jeu](./assets/capture.png)
 
